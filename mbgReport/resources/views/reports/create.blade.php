@@ -7,7 +7,8 @@
 <body>
     <h1>Buat Laporan</h1>
     <p>Halo, {{ auth()->user()->name }}</p>
-
+    <p><a href="{{ route('reports.index') }}">Lihat laporan saya</a></p>
+    
     @if (session('success'))
         <p style="color:green">{{ session('success') }}</p>
     @endif
