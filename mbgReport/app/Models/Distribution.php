@@ -12,4 +12,9 @@ class Distribution extends Model
     {
         return $this->belongsTo(School::class);
     }
+
+    public function reports()
+    {
+        return $this->hasMany(Report::class);
+    }
 }
