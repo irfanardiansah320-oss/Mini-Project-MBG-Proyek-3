@@ -80,10 +80,9 @@
                     @endswitch
                 </td>
                 <td>
+                    <a href="{{ route('reports.show', $report) }}">Detail</a>
                     @if (auth()->user()->role === 'pelapor' && $report->status === 'dikirim')
-                        <a href="{{ route('reports.edit', $report) }}">Ubah</a>
-                    @else
-                        -
+                        | <a href="{{ route('reports.edit', $report) }}">Ubah</a>
                     @endif
                 </td>
             </tr>

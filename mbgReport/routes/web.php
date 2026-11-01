@@ -23,8 +23,10 @@ Route::middleware('auth')->group(function () {
     Route::get('/reports', [ReportController::class, 'index'])->name('reports.index');
     Route::get('/reports/create', [ReportController::class, 'create'])->name('reports.create');
     Route::post('/reports', [ReportController::class, 'store'])->name('reports.store');
+    Route::get('/reports/{report}', [ReportController::class, 'show'])->name('reports.show');
     Route::get('/reports/{report}/edit', [ReportController::class, 'edit'])->name('reports.edit');
     Route::put('/reports/{report}', [ReportController::class, 'update'])->name('reports.update');
+    Route::patch('/reports/{report}/status', [ReportController::class, 'updateStatus'])->name('reports.status');
 
     Route::get('/schools/{school}/distributions', [ReportController::class, 'distributions'])->name('schools.distributions');
 });
