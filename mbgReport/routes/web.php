@@ -25,6 +25,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/reports/create', [ReportController::class, 'create'])->name('reports.create');
     Route::post('/reports', [ReportController::class, 'store'])->name('reports.store');
     Route::get('/reports/{report}', [ReportController::class, 'show'])->name('reports.show');
+    Route::get('/reports/{report}/evidence', [ReportController::class, 'evidence'])->name('reports.evidence');
     Route::get('/reports/{report}/edit', [ReportController::class, 'edit'])->name('reports.edit');
     Route::get('/rekap', [RecapController::class, 'index'])->name('recap.index');
     Route::put('/reports/{report}', [ReportController::class, 'update'])->name('reports.update');

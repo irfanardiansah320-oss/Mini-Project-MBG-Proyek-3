@@ -7,6 +7,7 @@ use App\Models\Report;
 use App\Models\School;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class ReportController extends Controller
 {
@@ -73,6 +74,7 @@ class ReportController extends Controller
             'distribution_id' => ['required', 'exists:distributions,id'],
             'incident_date' => ['required', 'date', 'before_or_equal:today'],
             'complaint' => ['required', 'string', 'min:10', 'max:1000'],
+            'evidence' => ['nullable', 'file', 'mimes:jpg,jpeg,png,pdf', 'max:2048'],
         ]);
 
         $distribution = Distribution::findOrFail($data['distribution_id']);
@@ -83,11 +85,16 @@ class ReportController extends Controller
                 ->withInput();
         }
 
+        $path = $request->hasFile('evidence')
+            ? $request->file('evidence')->store('evidence')
+            : null;
+
         Report::create([
             'user_id' => auth()->id(),
             'distribution_id' => $distribution->id,
             'incident_date' => $data['incident_date'],
             'complaint' => $data['complaint'],
+            'evidence_path' => $path,
             'status' => 'dikirim',
         ]);
 
@@ -120,10 +127,15 @@ class ReportController extends Controller
                 ->withErrors(['report' => 'Laporan sudah ditinjau dan tidak dapat diubah.']);
         }
 
-        $data = $request->validate([
-            'incident_date' => ['required', 'date', 'before_or_equal:today'],
-            'complaint' => ['required', 'string', 'min:10', 'max:1000'],
-        ]);
+        if ($request->hasFile('evidence')) {
+            if ($report->evidence_path) {
+                Storage::delete($report->evidence_path);
+            }
+            $data['evidence_path'] = $request->file('evidence')->store('evidence');
+        }
+        unset($data['evidence']);
+
+        $report->update($data);
 
         $distribution = $report->distribution;
 
@@ -206,6 +218,17 @@ class ReportController extends Controller
 
         return redirect()->route('reports.show', $report)
             ->with('success', 'Status laporan berhasil diperbarui.');
+    }
+
+    // File bukti disimpan privat, hanya bisa dibuka lewat route ini
+    public function evidence(Report $report)
+    {
+        $user = auth()->user();
+
+        abort_unless($user->role !== 'pelapor' || $report->user_id === $user->id, 403);
+        abort_unless($report->evidence_path && Storage::exists($report->evidence_path), 404);
+
+        return Storage::response($report->evidence_path);
     }
 
     // Ownership: hanya pelapor pemilik laporan

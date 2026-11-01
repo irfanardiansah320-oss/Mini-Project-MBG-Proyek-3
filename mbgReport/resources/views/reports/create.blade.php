@@ -8,7 +8,7 @@
     <h1>Buat Laporan</h1>
     <p>Halo, {{ auth()->user()->name }}</p>
     <p><a href="{{ route('reports.index') }}">Lihat laporan saya</a></p>
-    
+
     @if (session('success'))
         <p style="color:green">{{ session('success') }}</p>
     @endif
@@ -21,7 +21,7 @@
         </ul>
     @endif
 
-    <form method="POST" action="{{ route('reports.store') }}">
+    <form method="POST" action="{{ route('reports.store') }}" enctype="multipart/form-data">
         @csrf
 
         <div>
@@ -49,6 +49,11 @@
         <div>
             <label>Keluhan</label><br>
             <textarea name="complaint" rows="5" cols="40" required>{{ old('complaint') }}</textarea>
+        </div>
+
+        <div>
+            <label>Bukti pendukung (JPG, PNG, atau PDF, maks. 2 MB, boleh dikosongkan)</label><br>
+            <input type="file" name="evidence" accept=".jpg,.jpeg,.png,.pdf">
         </div>
 
         <p><small>Periksa kembali isian Anda. Laporan tidak dapat diubah setelah mulai ditinjau.</small></p>

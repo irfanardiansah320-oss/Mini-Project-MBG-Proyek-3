@@ -42,6 +42,16 @@
         <tr><th>Distribusi</th><td>{{ $report->distribution->distribution_date }} - {{ $report->distribution->menu }}</td></tr>
         <tr><th>Tanggal kejadian</th><td>{{ $report->incident_date }}</td></tr>
         <tr><th>Keluhan</th><td>{{ $report->complaint }}</td></tr>
+        <tr>
+            <th>Bukti pendukung</th>
+            <td>
+                @if ($report->evidence_path)
+                    <a href="{{ route('reports.evidence', $report) }}" target="_blank">Lihat bukti</a>
+                @else
+                    Tidak ada
+                @endif
+            </td>
+        </tr>
         <tr><th>Status</th><td>{{ $label[$report->status] ?? $report->status }}</td></tr>
         @if ($report->review_note)
             <tr><th>Catatan peninjauan</th><td>{{ $report->review_note }}</td></tr>
