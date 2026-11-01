@@ -15,7 +15,11 @@ return Application::configure(basePath: dirname(__DIR__))
         //
     })
     ->withExceptions(function (Exceptions $exceptions): void {
-        $exceptions->shouldRenderJsonWhen(
-            fn (Request $request) => $request->is('api/*') || $request->expectsJson(),
+    $exceptions->render(function (\Illuminate\Http\Exceptions\PostTooLargeException $e, $request) {
+        return response(
+            '<p>Ukuran file melebihi batas. Bukti pendukung maksimal 2 MB.</p>'
+            . '<p><a href="javascript:history.back()">Kembali ke form</a></p>',
+            413
         );
+    });
     })->create();

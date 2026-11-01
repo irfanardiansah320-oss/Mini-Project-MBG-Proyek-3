@@ -75,6 +75,10 @@ class ReportController extends Controller
             'incident_date' => ['required', 'date', 'before_or_equal:today'],
             'complaint' => ['required', 'string', 'min:10', 'max:1000'],
             'evidence' => ['nullable', 'file', 'mimes:jpg,jpeg,png,pdf', 'max:2048'],
+        ], [
+            'evidence.mimes' => 'Bukti harus berupa file JPG, JPEG, PNG, atau PDF.',
+            'evidence.max' => 'Ukuran bukti maksimal 2 MB.',
+            'evidence.uploaded' => 'Bukti gagal diunggah. Pastikan ukurannya maksimal 2 MB.',
         ]);
 
         $distribution = Distribution::findOrFail($data['distribution_id']);
