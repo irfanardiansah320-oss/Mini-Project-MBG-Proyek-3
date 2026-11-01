@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ReportController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\RecapController;
 
 Route::get('/', fn () => redirect()->route('home'));
 
@@ -25,6 +26,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/reports', [ReportController::class, 'store'])->name('reports.store');
     Route::get('/reports/{report}', [ReportController::class, 'show'])->name('reports.show');
     Route::get('/reports/{report}/edit', [ReportController::class, 'edit'])->name('reports.edit');
+    Route::get('/rekap', [RecapController::class, 'index'])->name('recap.index');
     Route::put('/reports/{report}', [ReportController::class, 'update'])->name('reports.update');
     Route::patch('/reports/{report}/status', [ReportController::class, 'updateStatus'])->name('reports.status');
 

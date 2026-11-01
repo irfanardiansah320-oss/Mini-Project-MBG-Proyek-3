@@ -8,6 +8,10 @@
     <h1>Daftar Laporan</h1>
     <p>Halo, {{ auth()->user()->name }} ({{ auth()->user()->role }})</p>
 
+    @if (auth()->user()->role !== 'pelapor')
+        <p><a href="{{ route('recap.index') }}">Lihat rekap</a></p>
+    @endif
+
     @if (auth()->user()->role === 'pelapor')
         <p><a href="{{ route('reports.create') }}">+ Buat laporan baru</a></p>
     @endif
