@@ -159,7 +159,11 @@ class ReportController extends Controller
         $step = self::TRANSITIONS[$report->status] ?? null;
         $canAct = $step && $user->role === $step['role'];
 
-        return view('reports.show', compact('report', 'related', 'step', 'canAct'));
+        $logs = $user->role !== 'pelapor'
+            ? $report->logs()->with('user')->latest()->get()
+            : collect();
+
+        return view('reports.show', compact('report', 'related', 'step', 'canAct', 'logs'));
     }
 
     public function updateStatus(Request $request, Report $report)

@@ -19,4 +19,10 @@ class Report extends Model
     {
         return $this->belongsTo(Distribution::class);
     }
+
+    public function logs()
+    {
+        return $this->hasMany(ReportLog::class);
+    }
+    
 }

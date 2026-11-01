@@ -91,5 +91,25 @@
             </ul>
         @endif
     @endif
+
+        @if (auth()->user()->role !== 'pelapor')
+        <h3>Riwayat perubahan status</h3>
+        @if ($logs->isEmpty())
+            <p>Belum ada perubahan.</p>
+        @else
+            <table border="1" cellpadding="6" cellspacing="0">
+                <tr><th>Waktu</th><th>Oleh</th><th>Dari</th><th>Ke</th></tr>
+                @foreach ($logs as $log)
+                    <tr>
+                        <td>{{ $log->created_at }}</td>
+                        <td>{{ $log->user->name ?? '-' }}</td>
+                        <td>{{ $label[$log->old_status] ?? $log->old_status }}</td>
+                        <td>{{ $label[$log->new_status] ?? $log->new_status }}</td>
+                    </tr>
+                @endforeach
+            </table>
+        @endif
+    @endif
+
 </body>
 </html>
